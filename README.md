@@ -50,4 +50,68 @@ implementation 'org.minbox.framework:ssh-agent:1.0-SNAPSHOT'
 
 ## AgentConfig
 
+`AgentConfig`类中定义了代理连接远程服务器的全部参数。
+
+| 参数名               | 默认值                       | 描述                                                         |
+| -------------------- | ---------------------------- | ------------------------------------------------------------ |
+| authenticationMethod | SSH_PRIVATE_KEY              | 登录服务器的授权方式，默认为private key方式                  |
+| username             | -                            | 登录服务器的用户名                                           |
+| password             | -                            | 登录服务器的密码，仅在USERNAME_PASSWORD授权登录方式下有效    |
+| serverIp             | -                            | 服务器IP地址                                                 |
+| sshPort              | 22                           | SSH端口号，默认为22                                          |
+| sshPrivateKeyPath    | 当前用户home目录/.ssh/id_rsa | 默认使用RSA方式的private key，如果本机通过其他加密方式生成ssh秘钥文件，请修改该参数（请配置文件绝对路径）。仅在SSH_PRIVATE_KEY授权登录方式下有效。 |
+| sshKnownHostsPath    | 当前用户home目录/known_hosts | 已知的主机文件，仅在SSH_PRIVATE_KEY授权登录方式下有效。      |
+| localPort            | -                            | 本地端口号，最大值：65535                                    |
+| forwardTargetPort    | -                            | 转发的目标端口号，最大值：65535                              |
+| forwardTargetIp      | 127.0.0.1                    | 转发的目标IP地址，默认为：127.0.0.1（本机），如果需要通过局域网IP地址访问其他服务器需要进行修改 |
+| addition             | -                            | 附加的配置参数集合，用于JSch Session#config方法              |
+
+
+
 ## AgentConnection
+
+`AgentConnection`是用于本机与远程服务器建立连接的核心类，需要通过`AgentConfig`对象实例进行初始化。
+
+> 该接口提供了`#connect`、`#disconnect`两个方法，默认的实现类为`org.minbox.framework.ssh.agent.DefaultAgentConnection`。
+
+**Ssh Private Key连接示例：**
+
+```java
+/**
+  * 使用ssh private key方式代理连接远程服务
+  * <p>
+  * 本地 "3307" 端口号绑定远程服务器 "3306"端口号，实现本地访问远程服务器上的MySQL服务
+  */
+static void sshPrivateConnect() {
+  AgentConfig config2 = new AgentConfig();
+  config2.setServerIp("xxx.xxx.xxx.xxx");
+  config2.setUsername("root");
+  config2.setLocalPort(3307);
+  config2.setForwardTargetPort(3306);
+  AgentConnection connection2 = new DefaultAgentConnection(config2);
+  connection2.connect();
+  // 连接成功后，访问本地3307的数据库，其实就是访问远程服务器的3306
+}
+```
+
+**用户名密码连接示例：**
+
+```java
+/**
+  * 使用用户名密码方式代理连接远程服务
+  * <p>
+  * 本地 "3307" 端口号绑定远程服务器 "3306"端口号，实现本地访问远程服务器上的MySQL服务
+  */
+static void usernamePasswordConnect() {
+  AgentConfig config = new AgentConfig();
+  config.setServerIp("xxx.xxx.xxx.xxx");
+  config.setUsername("root");
+  config.setPassword("密码");
+  config.setLocalPort(3307);
+  config.setForwardTargetPort(3306);
+  AgentConnection connection = new DefaultAgentConnection(config);
+  connection.connect();
+  // 连接成功后，访问本地3307的数据库，其实就是访问远程服务器的3306
+}
+```
+
