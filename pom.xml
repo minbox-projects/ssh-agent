@@ -6,16 +6,19 @@
     <parent>
         <artifactId>minbox-parent</artifactId>
         <groupId>org.minbox.framework</groupId>
-        <version>1.0.4-SNAPSHOT</version>
+        <version>1.0.4</version>
         <relativePath/>
     </parent>
     <groupId>org.minbox.framework</groupId>
     <artifactId>ssh-agent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <description>
         SSH代理跳板方式，支持 “用户名 + 公钥”、“用户名 + 密码方式” 认证登录，建立本地端口与远程服务器端口之间的通信管道。
     </description>
+    <properties>
+        <minbox-bom.version>1.0.4</minbox-bom.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.jcraft</groupId>
@@ -29,7 +32,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <scope>test</scope>
-            <version>1.7.30</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -37,4 +39,15 @@
             <optional>true</optional>
         </dependency>
     </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.minbox.framework</groupId>
+                <artifactId>minbox-bom</artifactId>
+                <version>${minbox-bom.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
