@@ -26,6 +26,54 @@
 implementation 'org.minbox.framework:ssh-agent:1.0-SNAPSHOT'
 ```
 
+## 在SpringBoot项目内使用
+
+使用示例项目访问：[api-boot-sample-ssh-agent](https://gitee.com/minbox-projects/api-boot/tree/2.3.x/api-boot-samples/api-boot-sample-ssh-agent)。
+
+**步骤一：添加依赖**
+
+在`pom.xml`文件内添加`api-boot-starter-ssh-agent`依赖：
+
+```xml
+<dependency>
+  <groupId>org.minbox.framework</groupId>
+  <artifactId>api-boot-starter-ssh-agent</artifactId>
+</dependency>
+```
+
+> 如果添加的依赖找不到或者无法下载，请访问官网快速开始：[快速使用手册](https://apiboot.minbox.org/zh-cn/docs/quick-start.html)
+
+**步骤二：配置转发代理端口**
+
+在`application.yml`配置文件内进行配置，可以通过结合spring profiles激活不同配置环境的代理方式
+
+```yaml
+# ApiBoot相关配置
+api:
+  boot:
+    # 配置连接生产环境的SSH Agent
+    ssh-agent:
+      configs:
+        # 连接生产MySQL
+        - username: metadata
+          server-ip: xxx.xxx.xx.xx
+          local-port: 3307
+          forward-target-port: 3306
+        # 连接生产Mongo
+        - username: metadata
+          server-ip: xxx.xxx.xx.xx
+          local-port: 27018
+          forward-target-ip: 192.168.1.220
+          forward-target-port: 27017
+        # 连接生产Redis
+        - username: metadata
+          server-ip: xxx.xxx.xx.xx
+          local-port: 6378
+          forward-target-port: 6379
+```
+
+> 注意事项：如果不通过username/password方式代理认证，需要在远程服务登录用户Home目录下`~/.ssh/authorized_keys`文件内添加本机的SSH 公钥。
+
 ## 为什么要用？
 
 服务器的安全性、数据的安全性对于我们来说异常的重要，有时服务器的运维人员仅通过`SSH PublicKey`给我们开通权限，我们只能通过已授权的公钥访问服务器，这种方式安全系数比较高。
