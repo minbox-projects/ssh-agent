@@ -3,6 +3,7 @@ package org.minbox.framework.ssh.agent.config;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.io.File;
 import java.util.Properties;
 
 /**
@@ -18,9 +19,13 @@ public class AgentConfig {
      */
     private static final String USER_HOME_PROPERTY_KEY = "user.home";
     /**
+     * The system directory separator
+     */
+    private static final String PATH_SEPARATOR = File.separator;
+    /**
      * The default ssh directory of current user
      */
-    private static final String SSH_HOME_DIR = System.getProperty(USER_HOME_PROPERTY_KEY) + "/.ssh";
+    private static final String SSH_HOME_DIR = System.getProperty(USER_HOME_PROPERTY_KEY) + PATH_SEPARATOR + ".ssh";
     /**
      * Authentication method for logging in to the remote server
      * <p>
@@ -50,11 +55,11 @@ public class AgentConfig {
      * <p>
      * the default use "RSA" private key file path
      */
-    private String sshPrivateKeyPath = SSH_HOME_DIR + "/id_rsa";
+    private String sshPrivateKeyPath = SSH_HOME_DIR + PATH_SEPARATOR + "id_rsa";
     /**
      * Known hosts file path
      */
-    private String sshKnownHostsPath = SSH_HOME_DIR + "/known_hosts";
+    private String sshKnownHostsPath = SSH_HOME_DIR + PATH_SEPARATOR + "known_hosts";
     /**
      * Port of the local agent
      */
