@@ -62,8 +62,8 @@ public class DefaultAgentConnection implements AgentConnection {
             this.session = jSch.getSession(config.getUsername(), config.getServerIp(), config.getSshPort());
             if (AuthenticationMethod.USERNAME_PASSWORD == config.getAuthenticationMethod()) {
                 this.session.setPassword(config.getPassword());
-                config.getAddition().put(STRICT_HOST_KEY_CHECK, NO_STRICT_HOST_KEY_CHECK);
             }
+            config.getAddition().put(STRICT_HOST_KEY_CHECK, NO_STRICT_HOST_KEY_CHECK);
             this.session.setConfig(config.getAddition());
             this.session.connect();
             log.info("Connection to the remote server [{}] is successful.", config.getServerIp());
