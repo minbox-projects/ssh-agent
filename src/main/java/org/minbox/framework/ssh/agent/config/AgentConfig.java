@@ -51,15 +51,21 @@ public class AgentConfig {
      */
     private int sshPort = 22;
     /**
+     * open ssh key type
+     * <p>
+     * the default use {@link SshKeyTypes#rsa}
+     */
+    private SshKeyTypes keyType = SshKeyTypes.rsa;
+    /**
      * Private key for logging in using ssh
      * <p>
      * the default use "RSA" private key file path
      */
-    private String sshPrivateKeyPath = SSH_HOME_DIR + PATH_SEPARATOR + "id_rsa";
+    private String sshPrivateKeyPath;
     /**
      * Known hosts file path
      */
-    private String sshKnownHostsPath = SSH_HOME_DIR + PATH_SEPARATOR + "known_hosts";
+    private String sshKnownHostsPath;
     /**
      * Port of the local agent
      */
@@ -79,4 +85,12 @@ public class AgentConfig {
      * Additional configuration parameters
      */
     private Properties addition = new Properties();
+
+    public String getSshPrivateKeyPath() {
+        return SSH_HOME_DIR + PATH_SEPARATOR + keyType.getPrivateKeyFile();
+    }
+
+    public String getSshKnownHostsPath() {
+        return SSH_HOME_DIR + PATH_SEPARATOR + "known_hosts";
+    }
 }
