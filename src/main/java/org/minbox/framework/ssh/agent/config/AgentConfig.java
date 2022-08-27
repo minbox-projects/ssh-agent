@@ -12,7 +12,6 @@ import java.util.Properties;
  * @author 恒宇少年
  */
 @Data
-@Accessors(chain = true)
 public class AgentConfig {
     /**
      * Java "user.home" property key

@@ -17,12 +17,29 @@
         SSH代理跳板方式，支持 “用户名 + 公钥”、“用户名 + 密码方式” 认证登录，建立本地端口与远程服务器端口之间的通信管道。
     </description>
     <properties>
-        <minbox-bom.version>1.0.4</minbox-bom.version>
+        <minbox-bom.version>1.0.8</minbox-bom.version>
+        <snakeyaml.version>1.30</snakeyaml.version>
+        <junit-jupiter-api.version>5.8.2</junit-jupiter-api.version>
+        <maven.test.skip>true</maven.test.skip>
     </properties>
     <dependencies>
         <dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jsch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit-jupiter-api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
