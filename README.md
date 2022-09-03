@@ -14,7 +14,7 @@
 <dependency>
   <groupId>org.minbox.framework</groupId>
   <artifactId>ssh-agent</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.2</version>
 </dependency>
 ```
 
@@ -23,7 +23,7 @@
 在`build.gradle`文件内添加如下依赖：
 
 ```
-implementation 'org.minbox.framework:ssh-agent:1.0-SNAPSHOT'
+implementation 'org.minbox.framework:ssh-agent:1.0.2'
 ```
 
 ## 在SpringBoot项目内使用
@@ -73,6 +73,47 @@ api:
 ```
 
 > 注意事项：如果不通过username/password方式代理认证，需要在远程服务登录用户Home目录下`~/.ssh/authorized_keys`文件内添加本机的SSH 公钥。
+
+## 在Junit5中使用
+
+**步骤一：继承SshAgentJunitTest单元测试类**
+
+```java
+@SpringBootTest
+class SimulationServiceApiApplicationTests extends SshAgentJunitTest {
+    @Test
+    void contextLoads() {
+        //...
+    }
+}
+```
+
+> 单元测试类继承自`SshAgentJunitTest`后就可以在测试方法执行前开启ssh代理连接，执行后关闭代理连接。
+
+**步骤二：添加`ssh-agent.yml`配置文件**
+
+`ssh-agent.yml`用于配置ssh代理连接列表，位于`src/test/resources`目录下，如果不创建该配置文件运行单元测试方法时会抛出异常。
+
+```yaml
+configs:
+  # 代理转发MySQL
+  - username: developer
+    serverIp: x.x.x.x
+    localPort: 3306
+    forwardTargetPort: 59500
+  # 代理转发Redis
+  - username: developer
+    serverIp: x.x.x.x
+    localPort: 6379
+    forwardTargetPort: 59504
+  # 代理转发mongo
+  - username: developer
+    serverIp: x.x.x.x
+    localPort: 27017
+    forwardTargetPort: 59503
+```
+
+
 
 ## 为什么要用？
 
