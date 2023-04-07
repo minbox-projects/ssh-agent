@@ -11,7 +11,7 @@
     </parent>
     <groupId>org.minbox.framework</groupId>
     <artifactId>ssh-agent</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4-SNAPSHOT</version>
     <packaging>jar</packaging>
     <description>
         SSH代理跳板方式，支持 “用户名 + 公钥”、“用户名 + 密码方式” 认证登录，建立本地端口与远程服务器端口之间的通信管道。
