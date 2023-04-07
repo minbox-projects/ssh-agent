@@ -11,5 +11,13 @@ import java.util.List;
  */
 @Data
 public class AgentConfigs {
+    /**
+     * 运行环境
+     * 读取该运行环境的后缀配置文件，如：运行环境为"dev"则加载"ssh-agent-dev.yml"
+     */
+    private String profile;
+    /**
+     * 配置列表
+     */
     private List<AgentConfig> configs;
 }

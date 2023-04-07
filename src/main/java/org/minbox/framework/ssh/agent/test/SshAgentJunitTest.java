@@ -10,6 +10,7 @@ import org.minbox.framework.ssh.agent.DefaultAgentConnection;
 import org.minbox.framework.ssh.agent.config.AgentConfig;
 import org.minbox.framework.ssh.agent.config.AgentConfigs;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.ObjectUtils;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -46,20 +47,36 @@ public class SshAgentJunitTest {
      * At "src/test/resources/ssh-agent.yml"
      */
     private static final String SSH_AGENT_YAML_NAME = "ssh-agent.yml";
+    /**
+     * Profile yml config name template
+     */
+    private static final String SSH_AGENT_YAML_NAME_PROFILE = "ssh-agent-%s.yml";
     private static final List<AgentConnection> connections = new ArrayList<>();
     private static List<AgentConfig> configs;
 
     static {
-        ClassPathResource classPathResource = new ClassPathResource(SSH_AGENT_YAML_NAME);
         try {
+            AgentConfigs agentConfigs = loadAgentConfigs(SSH_AGENT_YAML_NAME);
+            if (!ObjectUtils.isEmpty(agentConfigs.getProfile())) {
+                String profileYamlName = String.format(SSH_AGENT_YAML_NAME_PROFILE, agentConfigs.getProfile());
+                agentConfigs = loadAgentConfigs(profileYamlName);
+            }
+            configs = agentConfigs.getConfigs();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    private static AgentConfigs loadAgentConfigs(String configFileName) throws IOException {
+        try {
+            ClassPathResource classPathResource = new ClassPathResource(configFileName);
             File file = classPathResource.getFile();
             Yaml yaml = new Yaml();
-            AgentConfigs agentConfigs = yaml.loadAs(new FileInputStream(file), AgentConfigs.class);
-            configs = agentConfigs.getConfigs();
+            return yaml.loadAs(new FileInputStream(file), AgentConfigs.class);
         } catch (FileNotFoundException ffe) {
-            throw new AgentException("无法加载ssh-agent.yml, 请在src/test/resources下创建该文件, 并根据AgentConfig类字段进行配置.");
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            throw new AgentException("无法加载" + configFileName + ", 请在src/test/resources下创建该文件, 并根据AgentConfig类字段进行配置.");
+        } catch (IOException ioe) {
+            throw ioe;
         }
     }
 
