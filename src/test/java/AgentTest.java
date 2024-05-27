@@ -1,7 +1,6 @@
 import org.minbox.framework.ssh.agent.AgentConnection;
-import org.minbox.framework.ssh.agent.DefaultAgentConnection;
+import org.minbox.framework.ssh.agent.jsch.JSchAgentConnection;
 import org.minbox.framework.ssh.agent.config.AgentConfig;
-import org.minbox.framework.ssh.agent.config.AuthenticationMethod;
 
 /**
  * 测试ssh agent
@@ -21,7 +20,7 @@ public class AgentTest {
         config.setUsername("root");
         config.setLocalPort(3307);
         config.setForwardTargetPort(3306);
-        AgentConnection connection = new DefaultAgentConnection(config);
+        AgentConnection connection = new JSchAgentConnection(config);
         connection.connect();
         // 连接成功后，访问本地3307的数据库，其实就是访问远程服务器的3306
     }
@@ -36,7 +35,7 @@ public class AgentTest {
         config.setPassword("密码");
         config.setLocalPort(3307);
         config.setForwardTargetPort(3306);
-        AgentConnection connection = new DefaultAgentConnection(config);
+        AgentConnection connection = new JSchAgentConnection(config);
         connection.connect();
         // 连接成功后，访问本地3307的数据库，其实就是访问远程服务器的3306
     }

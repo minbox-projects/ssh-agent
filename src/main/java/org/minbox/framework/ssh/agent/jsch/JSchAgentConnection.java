@@ -1,9 +1,11 @@
-package org.minbox.framework.ssh.agent;
+package org.minbox.framework.ssh.agent.jsch;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import lombok.extern.slf4j.Slf4j;
+import org.minbox.framework.ssh.agent.AgentConnection;
+import org.minbox.framework.ssh.agent.AgentException;
 import org.minbox.framework.ssh.agent.config.AgentConfig;
 import org.minbox.framework.ssh.agent.config.AuthenticationMethod;
 import org.minbox.framework.ssh.agent.utils.StringUtils;
@@ -14,13 +16,13 @@ import org.minbox.framework.ssh.agent.utils.StringUtils;
  * @author 恒宇少年
  */
 @Slf4j
-public class DefaultAgentConnection implements AgentConnection {
+public class JSchAgentConnection implements AgentConnection {
     private static final String STRICT_HOST_KEY_CHECK = "StrictHostKeyChecking";
     private static final String NO_STRICT_HOST_KEY_CHECK = "no";
-    private AgentConfig config;
+    private final AgentConfig config;
     private Session session;
 
-    public DefaultAgentConnection(AgentConfig config) {
+    public JSchAgentConnection(AgentConfig config) {
         this.config = config;
         if (config == null) {
             throw new AgentException("The AgentConfig cannot be null.");

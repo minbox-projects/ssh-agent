@@ -6,7 +6,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.minbox.framework.ssh.agent.AgentConnection;
 import org.minbox.framework.ssh.agent.AgentException;
-import org.minbox.framework.ssh.agent.DefaultAgentConnection;
+import org.minbox.framework.ssh.agent.AgentSupport;
+import org.minbox.framework.ssh.agent.jsch.JSchAgentConnection;
 import org.minbox.framework.ssh.agent.config.AgentConfig;
 import org.minbox.framework.ssh.agent.config.AgentConfigs;
 import org.springframework.core.io.ClassPathResource;
@@ -53,6 +54,7 @@ public class SshAgentJunitTest {
     private static final String SSH_AGENT_YAML_NAME_PROFILE = "ssh-agent-%s.yml";
     private static final List<AgentConnection> connections = new ArrayList<>();
     private static List<AgentConfig> configs;
+    private static AgentSupport agentSupport;
 
     static {
         try {
@@ -62,6 +64,7 @@ public class SshAgentJunitTest {
                 agentConfigs = loadAgentConfigs(profileYamlName);
             }
             configs = agentConfigs.getConfigs();
+            agentSupport = agentConfigs.getSupport();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -82,9 +85,9 @@ public class SshAgentJunitTest {
 
     @BeforeAll
     public static void beforeSetSshProxy() {
-        configs.stream().forEach(config -> {
+        configs.forEach(config -> {
             try {
-                AgentConnection connection = new DefaultAgentConnection(config);
+                AgentConnection connection = createConnection(config);
                 connections.add(connection);
                 connection.connect();
             } catch (Exception e) {
@@ -95,7 +98,15 @@ public class SshAgentJunitTest {
 
     @AfterAll
     public static void afterCloseSshProxy() {
-        connections.stream().forEach(connection -> connection.disconnect());
+        connections.forEach(AgentConnection::disconnect);
         log.info("All ssh proxy are disconnected.");
+    }
+
+    public static AgentConnection createConnection(AgentConfig config) {
+        try {
+            return (AgentConnection) Class.forName(agentSupport.getClassName()).getDeclaredConstructor(AgentConfig.class).newInstance(config);
+        } catch (Exception e) {
+            throw new AgentException("Exception when instantiating AgentConnection", e);
+        }
     }
 }

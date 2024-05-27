@@ -20,12 +20,24 @@
         <minbox-bom.version>1.0.8</minbox-bom.version>
         <snakeyaml.version>1.30</snakeyaml.version>
         <junit-jupiter-api.version>5.8.2</junit-jupiter-api.version>
+        <sshd-netty.version>2.12.1</sshd-netty.version>
+        <eddsa.version>0.3.0</eddsa.version>
         <maven.test.skip>true</maven.test.skip>
     </properties>
     <dependencies>
         <dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jsch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.sshd</groupId>
+            <artifactId>sshd-netty</artifactId>
+            <version>${sshd-netty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.i2p.crypto</groupId>
+            <artifactId>eddsa</artifactId>
+            <version>${eddsa.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

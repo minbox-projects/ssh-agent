@@ -163,7 +163,7 @@ configs:
 
 `AgentConnection`是用于本机与远程服务器建立连接的核心类，需要通过`AgentConfig`对象实例进行初始化。
 
-> 该接口提供了`#connect`、`#disconnect`两个方法，默认的实现类为`org.minbox.framework.ssh.agent.DefaultAgentConnection`。
+> 该接口提供了`#connect`、`#disconnect`两个方法，默认的实现类为`org.minbox.framework.ssh.agent.jsch.JSchAgentConnection`。
 
 **Ssh Private Key连接示例：**
 
