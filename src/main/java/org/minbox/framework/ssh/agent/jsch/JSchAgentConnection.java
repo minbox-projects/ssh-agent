@@ -68,7 +68,7 @@ public class JSchAgentConnection implements AgentConnection {
             config.getAddition().put(STRICT_HOST_KEY_CHECK, NO_STRICT_HOST_KEY_CHECK);
             this.session.setConfig(config.getAddition());
             this.session.connect();
-            log.info("Connection to the remote server [{}] is successful.", config.getServerIp());
+            log.info("Connection to the remote server [{}({}):{}] is successful.", config.getServerIp(), config.getSshPort(), config.getForwardTargetPort());
             // Local and remote port number binding forwarding
             this.session.setPortForwardingL(config.getLocalPort(), config.getForwardTargetIp(), config.getForwardTargetPort());
             log.info("Port forwarding binding is completed, local port : {}, forward IP: {}, forward port : {}",

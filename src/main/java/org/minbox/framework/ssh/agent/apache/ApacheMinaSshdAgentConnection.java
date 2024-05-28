@@ -51,7 +51,7 @@ public class ApacheMinaSshdAgentConnection implements AgentConnection {
             if (!result) {
                 throw new AgentException("Remote server ssh login failed.");
             } else {
-                log.info("Connection to the remote server [{}] is successful.", config.getServerIp());
+                log.info("Connection to the remote server [{}({}):{}] is successful.", config.getServerIp(), config.getSshPort(), config.getForwardTargetPort());
                 // Local and remote port number binding forwarding
                 sshdSocketAddress = clientSession.startLocalPortForwarding(new SshdSocketAddress(FORWARD_LOCAL_IP, config.getLocalPort()),
                         new SshdSocketAddress(config.getForwardTargetIp(), config.getForwardTargetPort()));
